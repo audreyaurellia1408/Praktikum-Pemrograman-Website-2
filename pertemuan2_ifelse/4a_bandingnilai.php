@@ -3,7 +3,7 @@
     <title>Contoh Form dengan POST</title>
 </head>
 <body>
-    <form action="(04b)bandingnilai.php" method="post">
+    <form action="4b_bandingnilai.php" method="post">
         Bil I :
         <input type="text" name="bil1">
         

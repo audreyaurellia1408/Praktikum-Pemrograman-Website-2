@@ -8,7 +8,7 @@
     
     <hr>
     
-    <form action="(05b).php" method="post">
+    <form action="5b_bukutamuproses.php" method="post">
         <pre>
             Nama anda : <input type="text" name="nama" size="25"
             maxlength="50">

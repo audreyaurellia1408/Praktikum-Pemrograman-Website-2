@@ -5,7 +5,7 @@
 <body>
     <h1>Upload file</h1>
     <p>Klik Browser Uuntuk memillih file</p>
-    <form enctype="multipart/form-data" method="post" action="(06b).php">
+    <form enctype="multipart/form-data" method="post" action="6b_uploadfileproses.php">
     <!-- Batas maksimum  file (dalam byte) -->
      <input type="hidden" name="MAX_FILE_SIZE" value="1000000">
     <label>pilih file:</label>

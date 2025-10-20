@@ -3,7 +3,7 @@
     <title>Contoh Form dengan POST</title>
 </head>
 <body>
-    <form action="(03b)metodelogin.php" method="post">
+    <form action="3b_metodelogin.php" method="post">
         <h1>Only for authorized user</h1>
     
         <hr>
