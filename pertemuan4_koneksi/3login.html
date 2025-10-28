@@ -110,12 +110,11 @@
     <div class="login-container">
         <h2>Login</h2>
 
-        <!-- Tampilkan error jika ada -->
         <?php if (isset($_GET['error'])): ?>
             <div class="error"><?= htmlspecialchars($_GET['error']); ?></div>
         <?php endif; ?>
 
-        <form action="proses_login.php" method="post">
+        <form action="4proses_login.php" method="post">
             <label for="username">Username</label>
             <input type="text" id="username" name="username" required>
 
@@ -126,7 +125,7 @@
         </form>
 
         <div class="info">
-            Belum punya akun? <a href="form_user.html">Daftar</a>
+            Belum punya akun? <a href="1form_user.html">Daftar</a>
         </div>
     </div>
 

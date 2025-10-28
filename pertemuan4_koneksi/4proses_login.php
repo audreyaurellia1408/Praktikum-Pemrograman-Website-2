@@ -19,9 +19,9 @@ if (mysqli_num_rows($result) > 0) {
         $_SESSION['login'] = true;
 
         if ($data['role'] == 'admin') {
-            header("Location: dashboard_admin.php");
+            header("Location: 5dashboard_admin.php");
         } else {
-            header("Location: dashboard_user.php");
+            header("Location: 6dashboard_user.php");
         }
         exit();
     } else {

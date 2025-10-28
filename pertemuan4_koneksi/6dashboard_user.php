@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['login'])) {
-    header("Location: login.html");
+    header("Location: 3login.html");
     exit();
 }
 ?>
@@ -80,7 +80,7 @@ if (!isset($_SESSION['login'])) {
         <h2>Halo, <?php echo $_SESSION['username']; ?></h2>
         <p><b>Selamat Datang di Website Manajemen Inventori</b></p>
         <p>Kamu login sebagai <b><?php echo ucfirst($_SESSION['role']); ?></b></p>
-        <a href="logout.php" class="logout-btn">Logout</a>
+        <a href="6logout.php" class="logout-btn">Logout</a>
     </div>
 
 </body>

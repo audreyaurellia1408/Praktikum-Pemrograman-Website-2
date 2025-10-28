@@ -13,7 +13,7 @@ $query = "INSERT INTO users (username, password, role, created_at)
 if (mysqli_query($koneksi, $query)) {
     echo "<script>
             alert('Data user berhasil disimpan!');
-            window.location.href='form_user.html';
+            window.location.href='1form_user.html';
           </script>";
 } else {
     echo "Error: " . $query . "<br>" . mysqli_error($koneksi);
