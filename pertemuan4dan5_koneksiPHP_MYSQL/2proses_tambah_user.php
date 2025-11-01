@@ -2,22 +2,17 @@
 include 'koneksi.php';
 
 $username = $_POST['username'];
-$password = $_POST['password'];
-$role     = $_POST['role'];
+$password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+$role = $_POST['role'];
 
-$hashed_password = password_hash($password, PASSWORD_DEFAULT);
+$query = "INSERT INTO users (username, password, role) VALUES ('$username', '$password', '$role')";
+$result = mysqli_query($conn, $query);
 
-$query = "INSERT INTO users (username, password, role, created_at)
-          VALUES ('$username', '$hashed_password', '$role', NOW())";
-
-if (mysqli_query($koneksi, $query)) {
-    echo "<script>
-            alert('Data user berhasil disimpan!');
-            window.location.href='1form_user.html';
-          </script>";
+if ($result) {
+    echo "<script>alert('User berhasil ditambahkan'); window.location='5dashboard_admin.php';</script>";
 } else {
-    echo "Error: " . $query . "<br>" . mysqli_error($koneksi);
+    echo "Error: " . mysqli_error($conn);
 }
 
-mysqli_close($koneksi);
+mysqli_close($conn);
 ?>
