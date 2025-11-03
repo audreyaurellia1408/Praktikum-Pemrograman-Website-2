@@ -69,6 +69,33 @@ $result = mysqli_query($conn, $query);
             background: #79baffff;
         }
 
+        form {
+            margin-bottom: 25px;
+            background: #f2f8ff;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        form input, form select {
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        form button {
+            background: #81beffff;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background: #79baffff;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -114,6 +141,19 @@ $result = mysqli_query($conn, $query);
         <p>Kamu login sebagai <b><?php echo ucfirst($_SESSION['role']); ?></b></p>
         <a href="6logout.php" class="logout-btn">Logout</a>
 
+        <!-- Tambah User Baru -->
+        <h3>Tambah User Baru</h3>
+        <form action="2proses_tambah_user.php" method="POST">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <select name="role" required>
+                <option value="">-- Pilih Role --</option>
+                <option value="admin">Admin</option>
+                <option value="user">User</option>
+            </select>
+            <button type="submit">Tambah</button>
+        </form>
+
         <h3>Daftar User Terdaftar</h3>
         <table>
             <tr>
@@ -121,6 +161,7 @@ $result = mysqli_query($conn, $query);
                 <th>Username</th>
                 <th>Role</th>
                 <th>Tanggal Dibuat</th>
+                <th>Aksi</th>
             </tr>
             <?php
             if (mysqli_num_rows($result) > 0) {
@@ -130,14 +171,15 @@ $result = mysqli_query($conn, $query);
                             <td>{$row['username']}</td>
                             <td>{$row['role']}</td>
                             <td>{$row['created_at']}</td>
+                            <td>
+                                <a href='edit_user.php?id={$row['id']}'>Edit</a> |
+                                <a href='hapus_user.php?id={$row['id']}' onclick='return confirm(\"Yakin ingin menghapus user ini?\")'>Hapus</a>
+                            </td>
                           </tr>";
                 }
             } else {
-                echo "<tr><td colspan='4'>Belum ada user yang terdaftar.</td></tr>";
+                echo "<tr><td colspan='5'>Belum ada user yang terdaftar.</td></tr>";
             }
             ?>
         </table>
     </div>
-
-</body>
-</html>
