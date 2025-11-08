@@ -1,16 +1,39 @@
 <?php
 session_start();
 
+// ====== CEK LOGIN DAN AKSES DASHBOARD ======
 if (!isset($_SESSION['login'])) {
+    // Belum login
     header("Location: 3login.html");
     exit();
 }
 
+if ($_SESSION['role'] !== 'admin') {
+    // Bukan admin
+    echo "<script>
+            alert('Akses ditolak! Halaman ini hanya untuk Admin.');
+            window.location='6dashboard_user.php';
+          </script>";
+    exit();
+}
+
+// Tambahan: hanya bisa masuk kalau dari proses login langsung
+if (!isset($_SESSION['akses_dashboard']) || $_SESSION['akses_dashboard'] !== true) {
+    echo "<script>
+            alert('Akses langsung ke halaman ini tidak diperbolehkan!');
+            window.location='3login.html';
+          </script>";
+    exit();
+}
+
+// ====== KONEKSI DATABASE ======
 include 'koneksi.php';
 
+// Ambil data user
 $query = "SELECT id, username, role, created_at FROM users ORDER BY id DESC";
 $result = mysqli_query($conn, $query);
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -41,7 +64,7 @@ $result = mysqli_query($conn, $query);
         }
 
         h2 {
-            color: #75b5ffff;
+            color: #75b5ff;
             margin-bottom: 10px;
         }
 
@@ -52,13 +75,13 @@ $result = mysqli_query($conn, $query);
         }
 
         b {
-            color: #75b5ffff;
+            color: #75b5ff;
         }
 
         a.logout-btn {
             display: inline-block;
             padding: 10px 20px;
-            background: #81beffff;
+            background: #81beff;
             color: white;
             border-radius: 8px;
             text-decoration: none;
@@ -66,7 +89,7 @@ $result = mysqli_query($conn, $query);
         }
 
         a.logout-btn:hover {
-            background: #79baffff;
+            background: #5cafff;
         }
 
         form {
@@ -84,7 +107,7 @@ $result = mysqli_query($conn, $query);
         }
 
         form button {
-            background: #81beffff;
+            background: #81beff;
             color: white;
             border: none;
             padding: 8px 15px;
@@ -93,7 +116,7 @@ $result = mysqli_query($conn, $query);
         }
 
         form button:hover {
-            background: #79baffff;
+            background: #5cafff;
         }
 
         table {
@@ -103,11 +126,11 @@ $result = mysqli_query($conn, $query);
         }
 
         table, th, td {
-            border: 1px solid #8db3ecff;
+            border: 1px solid #8db3ec;
         }
 
         th {
-            background: #93c5faff;
+            background: #93c5fa;
             color: white;
             padding: 10px;
         }
@@ -118,7 +141,7 @@ $result = mysqli_query($conn, $query);
         }
 
         tr:nth-child(even) {
-            background: #e1f2ffff;
+            background: #e1f2ff;
         }
 
         @keyframes fadeIn {
@@ -136,12 +159,11 @@ $result = mysqli_query($conn, $query);
 <body>
 
     <div class="container">
-        <h2>Halo, <?php echo $_SESSION['username']; ?></h2>
+        <h2>Halo, <?php echo htmlspecialchars($_SESSION['username']); ?></h2>
         <p><b>Selamat Datang di Dashboard Admin</b></p>
         <p>Kamu login sebagai <b><?php echo ucfirst($_SESSION['role']); ?></b></p>
         <a href="6logout.php" class="logout-btn">Logout</a>
 
-        <!-- Tambah User Baru -->
         <h3>Tambah User Baru</h3>
         <form action="2proses_tambah_user.php" method="POST">
             <input type="text" name="username" placeholder="Username" required>
@@ -168,8 +190,8 @@ $result = mysqli_query($conn, $query);
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo "<tr>
                             <td>{$row['id']}</td>
-                            <td>{$row['username']}</td>
-                            <td>{$row['role']}</td>
+                            <td>" . htmlspecialchars($row['username']) . "</td>
+                            <td>" . htmlspecialchars($row['role']) . "</td>
                             <td>{$row['created_at']}</td>
                             <td>
                                 <a href='edit_user.php?id={$row['id']}'>Edit</a> |
@@ -183,3 +205,6 @@ $result = mysqli_query($conn, $query);
             ?>
         </table>
     </div>
+
+</body>
+</html>

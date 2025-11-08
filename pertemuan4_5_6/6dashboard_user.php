@@ -1,7 +1,28 @@
 <?php
 session_start();
+
+// ===== CEK LOGIN DAN AKSES DASHBOARD =====
 if (!isset($_SESSION['login'])) {
+    // Belum login → arahkan ke halaman login
     header("Location: 3login.html");
+    exit();
+}
+
+// Cek flag akses dashboard
+if (!isset($_SESSION['akses_dashboard']) || $_SESSION['akses_dashboard'] !== true) {
+    echo "<script>
+            alert('Akses langsung ke halaman ini tidak diperbolehkan!');
+            window.location='3login.html';
+          </script>";
+    exit();
+}
+
+// Cek role user
+if ($_SESSION['role'] !== 'user') {
+    echo "<script>
+            alert('Halaman ini hanya untuk user!');
+            window.location='5dashboard_admin.php';
+          </script>";
     exit();
 }
 ?>
@@ -76,12 +97,12 @@ if (!isset($_SESSION['login'])) {
 </head>
 <body>
 
-    <div class="container">
-        <h2>Halo, <?php echo $_SESSION['username']; ?></h2>
-        <p><b>Selamat Datang di Website Manajemen Inventori</b></p>
-        <p>Kamu login sebagai <b><?php echo ucfirst($_SESSION['role']); ?></b></p>
-        <a href="6logout.php" class="logout-btn">Logout</a>
-    </div>
+<div class="container">
+    <h2>Halo, <?php echo htmlspecialchars($_SESSION['username']); ?></h2>
+    <p><b>Selamat Datang di Website Manajemen Inventori</b></p>
+    <p>Kamu login sebagai <b><?php echo ucfirst($_SESSION['role']); ?></b></p>
+    <a href="6logout.php" class="logout-btn">Logout</a>
+</div>
 
 </body>
 </html>
