@@ -1,14 +1,11 @@
 <?php
 session_start();
 
-// ===== CEK LOGIN DAN AKSES DASHBOARD =====
 if (!isset($_SESSION['login'])) {
-    // Belum login → arahkan ke halaman login
     header("Location: 3login.html");
     exit();
 }
 
-// Cek flag akses dashboard
 if (!isset($_SESSION['akses_dashboard']) || $_SESSION['akses_dashboard'] !== true) {
     echo "<script>
             alert('Akses langsung ke halaman ini tidak diperbolehkan!');
@@ -17,7 +14,6 @@ if (!isset($_SESSION['akses_dashboard']) || $_SESSION['akses_dashboard'] !== tru
     exit();
 }
 
-// Cek role user
 if ($_SESSION['role'] !== 'user') {
     echo "<script>
             alert('Halaman ini hanya untuk user!');

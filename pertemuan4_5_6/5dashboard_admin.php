@@ -1,15 +1,12 @@
 <?php
 session_start();
 
-// ====== CEK LOGIN DAN AKSES DASHBOARD ======
 if (!isset($_SESSION['login'])) {
-    // Belum login
     header("Location: 3login.html");
     exit();
 }
 
 if ($_SESSION['role'] !== 'admin') {
-    // Bukan admin
     echo "<script>
             alert('Akses ditolak! Halaman ini hanya untuk Admin.');
             window.location='6dashboard_user.php';
@@ -17,7 +14,6 @@ if ($_SESSION['role'] !== 'admin') {
     exit();
 }
 
-// Tambahan: hanya bisa masuk kalau dari proses login langsung
 if (!isset($_SESSION['akses_dashboard']) || $_SESSION['akses_dashboard'] !== true) {
     echo "<script>
             alert('Akses langsung ke halaman ini tidak diperbolehkan!');
@@ -26,10 +22,8 @@ if (!isset($_SESSION['akses_dashboard']) || $_SESSION['akses_dashboard'] !== tru
     exit();
 }
 
-// ====== KONEKSI DATABASE ======
 include 'koneksi.php';
 
-// Ambil data user
 $query = "SELECT id, username, role, created_at FROM users ORDER BY id DESC";
 $result = mysqli_query($conn, $query);
 ?>
