@@ -1,14 +1,12 @@
 <?php
 session_start();
-include 'koneksi.php'; // koneksi ke database db_login
+include 'koneksi.php';
 
-// CEK LOGIN
 if (!isset($_SESSION['login']) || $_SESSION['login'] !== true) {
     header("Location: 3login.html");
     exit();
 }
 
-// CEK ROLE USER
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'user') {
     echo "<script>
             alert('Halaman ini khusus untuk USER!');
@@ -17,7 +15,6 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'user') {
     exit();
 }
 
-/* ===== PROSES UPLOAD FILE ===== */
 $pesan = "";
 
 if (isset($_POST['upload'])) {
@@ -35,8 +32,7 @@ if (isset($_POST['upload'])) {
     $path = $folderTujuan . $namaBaru;
 
     if ($ukuran > 0 && move_uploaded_file($tmpFile, $path)) {
-        // ===== SIMPAN KE DATABASE =====
-        $user_id = $_SESSION['id']; // pastikan session menyimpan id user
+        $user_id = $_SESSION['id'];
         $stmt = $conn->prepare("INSERT INTO files (user_id, filename, filepath) VALUES (?, ?, ?)");
         $stmt->bind_param("iss", $user_id, $namaFile, $path);
 
