@@ -1,14 +1,15 @@
 <?php
-include "koneksi.php";
-require_once __DIR__ . '/vendor/autoload.php'; // Pastikan mPDF sudah diinstall
+include 'koneksi.php';
+require_once __DIR__ . '/vendor/autoload.php'; // pastikan path ini benar
 
 $mpdf = new \Mpdf\Mpdf();
 
+// Ambil data album dari database
 $query = mysqli_query($conn, "SELECT * FROM album ORDER BY id ASC");
 
-$html = '
-<h2 style="text-align:center;color:#76bbfc;">Laporan Data Album</h2>
-<table border="1" cellpadding="8" cellspacing="0" width="100%" style="border-collapse: collapse; font-family: Arial, sans-serif;">
+// Mulai HTML
+$html = '<h2 style="text-align:center;color:#76bbfc;">Laporan Data Album</h2>
+<table border="1" cellpadding="8" cellspacing="0" width="100%" style="border-collapse: collapse;">
     <tr style="background-color:#76bbfc; color:white; text-align:center;">
         <th>No</th>
         <th>Nama Album</th>
@@ -21,16 +22,13 @@ $html = '
 
 $no = 1;
 while ($row = mysqli_fetch_assoc($query)) {
-
     $imgPath = __DIR__ . '/uploads/' . $row['foto_album'];
-
-    if (file_exists($imgPath)) {
-        $type = pathinfo($imgPath, PATHINFO_EXTENSION);
-        $data = file_get_contents($imgPath);
-        $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-        $imgTag = '<img src="' . $base64 . '" width="50">';
+    // Cek apakah file foto ada
+    if(file_exists($imgPath)){
+        // Gunakan path file lokal agar mPDF bisa membaca
+        $imgTag = '<img src="'.$imgPath.'" width="50">';
     } else {
-        $imgTag = 'File tidak ditemukan';
+        $imgTag = '';
     }
 
     $html .= '<tr>
@@ -45,7 +43,13 @@ while ($row = mysqli_fetch_assoc($query)) {
 
 $html .= '</table>';
 
+// Tulis HTML ke mPDF
+// Jika HTML besar, bisa dipotong dengan WriteHTML() bertahap:
+// $mpdf->WriteHTML($html_part1);
+// $mpdf->WriteHTML($html_part2);
 $mpdf->WriteHTML($html);
 
+// Output langsung sebagai download
 $mpdf->Output('laporan_album.pdf', 'D');
 exit();
+?>
